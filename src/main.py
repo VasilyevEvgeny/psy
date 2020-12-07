@@ -4,7 +4,7 @@ import os
 import tkinter as tk
 from tkinter import Tk, PhotoImage, LEFT, IntVar, Label
 from tkinter.ttk import Frame, Scale, Label, Style
-#import pandas as pd
+import pandas as pd
 import operator
 from functools import reduce
 
@@ -38,7 +38,7 @@ class Psy(Frame):
 
         self.__labels = []
         self.__scales = []
-        self.__vars = []
+        self.__vars = [[0, 0] for _ in range(4)]
 
         self.__configure_ui()
 
@@ -55,14 +55,12 @@ class Psy(Frame):
             if not i % 2:
                 self.__labels.append([])
             else:
-                self.__vars.append([])
                 self.__scales.append([])
             for j in range(2):
                 if not i % 2:
                     self.__labels[i_labels].append(Label(self.master, text=self.__questions[i_labels][j]).
                                                    grid(row=i, column=j, padx=(100, 10), pady=(10, 10)))
                 else:
-                    self.__vars[i_scales].append([])
                     self.__scales[i_scales].append(Scale(self.master, from_=0, to=100, length=100,
                                                          command=lambda val, i=i_scales, j=j: self.__on_scale(val, i, j)).
                                                    grid(row=i, column=j, padx=(100, 10), pady=(10, 10)))
@@ -78,16 +76,15 @@ class Psy(Frame):
     def __on_scale(self, val, i, j):
         var = IntVar()
         var.set(int(float(val)))
-        self.__vars[i][j] = var
+        self.__vars[i][j] = var.get()
 
     def __save_results(self):
         q = reduce(operator.concat, self.__questions)
         v = reduce(operator.concat, self.__vars)
         res_dict = {'Вопросы': q, 'Ответы': v}
-        #df = pd.DataFrame(res_dict)
+        df = pd.DataFrame(res_dict)
         path = '\\'.join(os.path.dirname(os.path.realpath(__file__)).split('\\')[:-1]) + '\\result.xlsx'
-        print(path)
-        #df.to_excel(path + '', sheet_name='Answers', index=False)
+        df.to_excel(path + '', sheet_name=NAME, index=False)
 
 
 def main():
