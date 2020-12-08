@@ -46,8 +46,8 @@ class Psy(Frame):
         self.master.title(NAME)
         self.master.resizable(0, 0)
         self.master.geometry('500x400+500+200')
-        path = os.path.dirname(os.path.realpath(__file__))
-        self.master.tk.call('wm', 'iconphoto', self.master._w, PhotoImage(file=path+'/icon.png'))
+        #path = os.path.dirname(os.path.realpath(__file__))
+        #self.master.tk.call('wm', 'iconphoto', self.master._w, PhotoImage(file=path+'/icon.png'))
 
         i_labels = 0
         i_scales = 0
@@ -83,8 +83,8 @@ class Psy(Frame):
         v = reduce(operator.concat, self.__vars)
         res_dict = {'Вопросы': q, 'Ответы': v}
         df = pd.DataFrame(res_dict)
-        path = '\\'.join(os.path.dirname(os.path.realpath(__file__)).split('\\')[:-1]) + '\\result.xlsx'
-        df.to_excel(path + '', sheet_name=NAME, index=False)
+        path = os.path.join(os.environ['HOMEPATH'], 'Desktop')
+        df.to_excel(path + '\\result.xlsx', sheet_name=NAME, index=False)
 
 
 def main():
