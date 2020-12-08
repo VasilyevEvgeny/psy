@@ -1,4 +1,4 @@
-# Psycological 
+# Psychological 
 
 ## Usage
 
